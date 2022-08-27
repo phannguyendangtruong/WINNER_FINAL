@@ -77,10 +77,15 @@ function CreateNft(props) {
 		}
 	}, [principal, superheroes]);
 
+	const checkSchool = (school) => {
+
+	}
+
 	const onFinish = async (values) => {
 		toast('Minting NFT!!!');
 
 		const cid = await client.put([fileList[0].originFileObj]);
+		
 		const nFile = new File(
 			[
 				JSON.stringify({

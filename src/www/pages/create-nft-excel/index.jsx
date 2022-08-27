@@ -77,12 +77,12 @@ function CreateNftExcel(props) {
 			await getMyInfor();
 		}
 	}, [principal, superheroes]);
-
+	
 	const onFinish = async (values) => {
 		toast('Minting NFT!!!');
 
-		if(fileList[0]){
-			const cid = await client.put([fileList[0].originFileObj]);
+		if(values?.address == undefined){
+		}else{
 			const nFile = new File(
 				[
 					JSON.stringify({
@@ -92,40 +92,22 @@ function CreateNftExcel(props) {
 						school: values?.school,
 						rating: values?.rating,
 						chairman: values?.chairman,
-						image: `${IPFS_LINK}${cid}/${fileList[0].originFileObj.name}`,
+						image: values?.image,
 						timeCreate: Date.now(),
 					}),
 				],
 				`${values?.name}.json`,
 				{ type: 'text/plain' }
 			);
+			const metadataCID = await client.put([nFile]);
+
+			const res = await superheroes.mint(Principal.fromText(values?.address), [
+				{ tokenUri: `${IPFS_LINK}${metadataCID}/${values?.name}.json` },
+			]);
+			console.log('==== mint ', res);
+			toast('Minted NFT success!!!');
 		}
-		const nFile = new File(
-			[
-				JSON.stringify({
-					description: values?.description,
-					name: values?.name,
-					category: values?.category,
-					school: values?.school,
-					rating: values?.rating,
-					chairman: values?.chairman,
-					image: values?.image,
-					timeCreate: Date.now(),
-				}),
-			],
-			`${values?.name}.json`,
-			{ type: 'text/plain' }
-		);
 
-		console.log("======>", nFile);
-
-		const metadataCID = await client.put([nFile]);
-
-		const res = await superheroes.mint(Principal.fromText(values?.address), [
-			{ tokenUri: `${IPFS_LINK}${metadataCID}/${values?.name}.json` },
-		]);
-		console.log('==== mint ', res);
-		toast('Minted NFT success!!!');
 		//window.location.reload();
 	};
 
@@ -175,8 +157,14 @@ function CreateNftExcel(props) {
 				}
 
 				//console.log("==== values ", address, name, category, school, rating, chairman, image, description);
-
-				await onFinish(values);
+				const get = allSchool.find(school => school.schoolCode === values.school);
+				console.log("==== get ", get?.schoolCode);
+				console.log("==== values ", values);
+				if(get?.schoolCode == values.school){	
+					await onFinish(values);
+				}else{
+					toast('School not found!!!');
+				}
 			}
 			// window.location.reload();
 		}

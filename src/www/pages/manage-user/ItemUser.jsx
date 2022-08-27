@@ -29,7 +29,7 @@ const ItemRank = ({ item, index }) => {
 			item?.walletAddress,
 			item.username,
 			item.cccd,
-			Number(item.school),
+			item.school,
 			item.birthday,
 			item.image,
 			item.description,
