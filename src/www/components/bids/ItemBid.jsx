@@ -59,7 +59,7 @@ const ItemBid = ({ item }) => {
 				(_item) => _item.schoolCode == _value
 			)[0];
 
-			return nameSchool.name;
+			return nameSchool?.name;
 		} else return 'Loading...';
 	};
 

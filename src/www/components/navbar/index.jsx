@@ -46,7 +46,6 @@ function Navbar(props) {
 	const getMyInfor = async () => {
 		if (principal) {
 			let res = await superheroes.findUserById(Principal.fromText(principal));
-			superheroes.insertSchoolDefault();
 			if (
 				(principal == admins.dangtruong ||
 					principal == admins.tuannghia ||
@@ -126,7 +125,6 @@ function Navbar(props) {
 										</div>
 									</div>
 
-
 									<div className='sub-dropdown'>
 										<button className='sub-dropbtn'>
 											<MenuItem>Create account</MenuItem>
@@ -141,7 +139,7 @@ function Navbar(props) {
 											</a>
 										</div>
 									</div>
-                  
+
 									{profile?.role == 2 ? (
 										<a href='/manage-degree' onClick={selectTab}>
 											<MenuItem>Manage degrees</MenuItem>
