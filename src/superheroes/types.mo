@@ -7,6 +7,8 @@
 
 import Time "mo:base/Time";
 import TrieSet "mo:base/TrieSet";
+import Bool "mo:base/Bool";
+
 
 module {
     public type Metadata = {

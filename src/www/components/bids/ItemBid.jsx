@@ -4,18 +4,19 @@ import './bids.css';
 import { Link } from 'react-router-dom';
 import { useCanister, useConnect } from '@connect2ic/react';
 
-const getSchool = (_value) => {
-	switch (_value) {
-		case 1:
-			return 'FPT POLYTECHNIC';
-		case 2:
-			return 'FPT UNIVERSITY';
-		case 3:
-			return 'UNI OF GREENWICH';
-		default:
-			return 'FPT POLYTECHNIC';
-	}
-};
+// const getSchool = (_value) => {
+// 	switch (_value) {
+// 		case 1:
+// 			return 'FPT POLYTECHNIC';
+// 		case 2:
+// 			return 'FPT UNIVERSITY';
+// 		case 3:
+// 			return 'UNI OF GREENWICH';
+// 		default:
+// 			return 'FPT POLYTECHNIC';
+// 	}
+
+// };
 
 const formatDate = (_timestamp) => {
 	var date = new Date(_timestamp);
@@ -39,6 +40,7 @@ const formatDate = (_timestamp) => {
 const ItemBid = ({ item }) => {
 	const [superheroes, { loading, error }] = useCanister('superheroes');
 	const [profile, setProfile] = useState();
+	const [allSchool, setAllSchool] = useState([]);
 
 	useEffect(() => {
 		getMyInfor();
@@ -47,6 +49,18 @@ const ItemBid = ({ item }) => {
 	const getMyInfor = async () => {
 		const res = await superheroes.findUserById(item.owner);
 		setProfile(res[0]);
+		const schools = await superheroes.getAllSchool();
+		setAllSchool(schools);
+	};
+
+	const getSchool = (_value) => {
+		if (_value) {
+			const nameSchool = allSchool.filter(
+				(_item) => _item.schoolCode == _value
+			)[0];
+
+			return nameSchool.name;
+		} else return 'Loading...';
 	};
 
 	return (
@@ -79,7 +93,7 @@ const ItemBid = ({ item }) => {
 						</div>
 					</div>
 					<div className='bids-card-bottom'>
-						<p>{getSchool(Number(item.school))}</p>
+						<p>{allSchool.length > 0 ? getSchool(profile?.school) : ''}</p>
 						<p>{formatDate(item.timeCreate)}</p>
 					</div>
 				</div>

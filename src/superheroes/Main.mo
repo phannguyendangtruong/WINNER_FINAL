@@ -204,21 +204,21 @@ shared(msg) actor class NFTSale(
 
 
     // confirm degree is true
-    public shared(msg) func updateIsBlocked(id : Nat)  {       
-       for(sc : TokenInfo in tokens.vals()){
-          if(sc.index == id){
-            let token: TokenInfo = {
-            index = sc.index;
-            var owner = sc.owner;
-            var metadata = sc.metadata;
-            var operator = sc.operator;
-            var isBlocked = true;
-            timestamp = sc.timestamp;
-          };
-          tokens.put(id, token);
-        } ;
-       };
-    };
+    // public shared(msg) func updateIsBlocked(id : Nat)  {       
+    //    for(sc : TokenInfo in tokens.vals()){
+    //       if(sc.index == id){
+    //         let token: TokenInfo = {
+    //         index = sc.index;
+    //         var owner = sc.owner;
+    //         var metadata = sc.metadata;
+    //         var operator = sc.operator;
+    //         var isBlocked = true;
+    //         timestamp = sc.timestamp;
+    //       };
+    //       tokens.put(id, token);
+    //     } ;
+    //    };
+    // };
 
 
     // Thêm tài khoản cho user
@@ -289,8 +289,8 @@ shared(msg) actor class NFTSale(
     // insert default school
     public func insertSchoolDefault(): async [SchoolList]{
          if(school.size() == 0){
-            await insertSchool("FPT University","Lot E2a-7, Road D1 Hi-Tech Park, Long Thanh My Ward, City. Thu Duc, City. Ho Chi Minh","FU","Nguyen Khac Thanh","hinhanh.jpg","fpt.jpg","truong dai hoc");
-            await insertSchool("FPT Polytechnic","Software Park, Innovation Building, Lot 24, Quang Trung, District 12, City.","FPOLY","Vu Chi Thanh", "hinhanh.jpg","fpt.jpg","truon dai hoc");
+            await insertSchool("FPT University","Lot E2a-7, Road D1 Hi-Tech Park, Long Thanh My Ward, City. Thu Duc, City. Ho Chi Minh","FU","Nguyen Khac Thanh","https://seeklogo.com/images/F/fpt-university-logo-B3B6D84292-seeklogo.com.png","https://vcdn-vnexpress.vnecdn.net/2021/02/20/DH-FPT-4359-1612093890-5647-1613785573.jpg","truong dai hoc");
+            await insertSchool("FPT Polytechnic","Software Park, Innovation Building, Lot 24, Quang Trung, District 12, City.","FPOLY","Vu Chi Thanh", "https://upload.wikimedia.org/wikipedia/commons/2/20/FPT_Polytechnic.png","https://luathoangphi.vn/wp-content/uploads/2022/04/Hoc-phi-truong-cao-dang-fpt-Polytechnic-2022.jpg?v=1650860023","truon dai hoc");
         };
         Iter.toArray(school.vals());
         
@@ -423,6 +423,7 @@ shared(msg) actor class NFTSale(
             owner = info.owner;
             metadata = info.metadata;
             timestamp = info.timestamp;
+            isBlocked = info.isBlocked;
             operator = info.operator;
         };
     };
@@ -542,6 +543,7 @@ shared(msg) actor class NFTSale(
                 var owner = to;
                 var metadata = null;
                 var operator = null;
+                var isBlocked = false;
                 timestamp = Time.now();
             };
             tokens.put(totalSupply_, token);
@@ -569,6 +571,7 @@ shared(msg) actor class NFTSale(
             var owner = to;
             var metadata = metadata;
             var operator = null;
+            var isBlocked = false;
             timestamp = Time.now();
         };
         tokens.put(totalSupply_, token);
@@ -589,6 +592,7 @@ shared(msg) actor class NFTSale(
                 var owner = to;
                 var metadata = metadata;
                 var operator = null;
+                var isBlocked = false;
                 timestamp = Time.now();
             };
             tokens.put(totalSupply_, token);

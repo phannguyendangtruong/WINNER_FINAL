@@ -6,7 +6,6 @@ import ItemBid from './ItemBid';
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 const Bids = ({ title, data }) => {
-	console.log('===> item data ', data);
 	return (
 		// <ScrollMenu className='bids'>
 		// <ScrollMenu className='bids'>
