@@ -47,7 +47,6 @@ function CreateUser(props) {
 	const profile = useRef({ role: 1 });
 	const [excel, setExcel] = useState([]);
 	const datePicker = useRef('');
-	const [allSchool, setAllSchool] = useState([]);
 
 	// when image upload
 	useEffect(() => {
@@ -69,8 +68,6 @@ function CreateUser(props) {
 	const getMyInfor = async () => {
 		const res = await superheroes.findUserById(Principal.fromText(principal));
 		profile.current = res[0];
-		const schools = await superheroes.getAllSchool();
-		setAllSchool(schools);
 	};
 
 	const requestUpdate = () => {
@@ -99,7 +96,7 @@ function CreateUser(props) {
 			Principal.fromText(values?.address),
 			values?.username,
 			values?.identity + '',
-			values?.school,
+			Number(values?.school),
 			datePicker.current,
 			image,
 			values?.description
@@ -340,10 +337,6 @@ function CreateUser(props) {
 					padding: 20,
 					marginBottom: 50,
 				}}>
-				<div>
-					<input type="file" onChange={onChange} />
-		   			<button onClick={createUserExcel}>Create</button>
-	   			</div>
 				<Title style={{ color: 'white' }}>Create Account</Title>
 				<Required style={{ color: 'white' }}>
 					<RedIcon style={{ color: 'white' }}>*</RedIcon> Required fields
@@ -424,22 +417,21 @@ function CreateUser(props) {
 									flexDirection: 'row',
 									justifyContent: 'space-between',
 								}}>
-								{allSchool.length > 0 ? (
-									<Form.Item name='school'>
-										<Select
-											defaultValue='Choose School'
-											size='large'
-											style={{
-												width: 200,
-												marginBottom: 20,
-												borderRadius: 10,
-											}}>
-											{allSchool.map((item) => (
-												<Option value={item?.schoolCode}>{item?.name}</Option>
-											))}
-										</Select>
-									</Form.Item>
-								) : null}
+								<Form.Item name='school'>
+									<Select
+										defaultValue='Choose chool'
+										size='large'
+										style={{
+											width: '100%',
+											marginBottom: 10,
+											borderRadius: 10,
+										}}>
+										<Option value='1'>FPT Polytechnic</Option>
+										<Option value='2'>FPT University</Option>
+
+										<Option value='3'>Uni of Greenwich</Option>
+									</Select>
+								</Form.Item>
 							</div>
 
 							<div style={{ color: 'white', fontSize: 14 }}>Description</div>

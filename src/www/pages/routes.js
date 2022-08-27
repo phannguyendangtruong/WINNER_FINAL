@@ -12,6 +12,7 @@ const Started = lazy(() => import("./started"))
 const Profile = lazy(() => import("./profile"))
 const Ranking = lazy(() => import("./ranking"))
 const CreateUser = lazy(() => import("./create-user"))
+const CreateUserExcel = lazy(() => import("./create-user-excel"))
 const ManageUser = lazy(() => import("./manage-user"))
 const ManageDegree = lazy(() => import("./manage-degree"))
 const Manage = lazy(() => import("./manage"))
@@ -73,6 +74,13 @@ const routes = [
         exact: true,
         public: true,
         component: CreateUser,
+        layout: MarketLayout
+    },
+    {
+        path: "create-user-excel",
+        exact: true,
+        public: true,
+        component: CreateUserExcel,
         layout: MarketLayout
     },
     {

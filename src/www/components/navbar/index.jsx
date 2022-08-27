@@ -119,6 +119,10 @@ function Navbar(props) {
 										<MenuItem>Create account</MenuItem>
 									</a>
 
+									<a href='/create-user-excel'>
+										<MenuItem>Create account excel</MenuItem>
+									</a>
+                  
 									{profile?.role == 2 ? (
 										<a href='/manage-degree' onClick={selectTab}>
 											<MenuItem>Manage degrees</MenuItem>

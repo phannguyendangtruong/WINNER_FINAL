@@ -20,6 +20,7 @@ import { withContext } from '../../hooks';
 import { themes } from '../../assets/themes';
 import { File } from 'nft.storage';
 import NotPermistion from '../../components/not-permistion';
+import * as XLSX from "xlsx";
 
 const { Option } = Select;
 import { useCanister, useConnect } from '@connect2ic/react';
@@ -31,6 +32,7 @@ function CreateNft(props) {
 	const [fileImg, setFileImg] = useState('');
 	const profile = useRef({ role: 1 });
 	const [allSchool, setAllSchool] = useState([]);
+	const [excel, setExcel] = useState([]);
 	const [superheroes, { loading, error }] = useCanister('superheroes');
 
 	// upload image
@@ -78,7 +80,25 @@ function CreateNft(props) {
 	const onFinish = async (values) => {
 		toast('Minting NFT!!!');
 
-		const cid = await client.put([fileList[0].originFileObj]);
+		if(fileList[0]){
+			const cid = await client.put([fileList[0].originFileObj]);
+			const nFile = new File(
+				[
+					JSON.stringify({
+						description: values?.description,
+						name: values?.name,
+						category: values?.category,
+						school: values?.school,
+						rating: values?.rating,
+						chairman: values?.chairman,
+						image: `${IPFS_LINK}${cid}/${fileList[0].originFileObj.name}`,
+						timeCreate: Date.now(),
+					}),
+				],
+				`${values?.name}.json`,
+				{ type: 'text/plain' }
+			);
+		}
 		const nFile = new File(
 			[
 				JSON.stringify({
@@ -88,13 +108,16 @@ function CreateNft(props) {
 					school: values?.school,
 					rating: values?.rating,
 					chairman: values?.chairman,
-					image: `${IPFS_LINK}${cid}/${fileList[0].originFileObj.name}`,
+					image: values?.image,
 					timeCreate: Date.now(),
 				}),
 			],
 			`${values?.name}.json`,
 			{ type: 'text/plain' }
 		);
+
+		console.log("======>", nFile);
+
 		const metadataCID = await client.put([nFile]);
 
 		const res = await superheroes.mint(Principal.fromText(values?.address), [
@@ -102,8 +125,58 @@ function CreateNft(props) {
 		]);
 		console.log('==== mint ', res);
 		toast('Minted NFT success!!!');
-		window.location.reload();
+		//window.location.reload();
 	};
+
+	const onChange = (e) => {
+		const [file] = e.target.files;
+		const reader = new FileReader();
+
+		reader.onload = (evt) => {
+			const bstr = evt.target.result;
+			const wb = XLSX.read(bstr, { type: "binary" });
+			const wsname = wb.SheetNames[0];
+			const ws = wb.Sheets[wsname];
+			const data = XLSX.utils.sheet_to_html(ws, { header: 1 });
+			let csv = data.replace(/<[^>]*>?/gm, ',');
+			setExcel(csv);
+		};
+		reader.readAsBinaryString(file);
+  	};
+
+	  const createNFTExcel = async () => {
+		toast('Waiting...!!!');
+		const arr = excel.split(',');
+
+		for(let i = 3; i < arr.length; i++){
+			if(i == 3 || i == 21 || i == 39 || i == 57 || i == 75 || i == 93 || i == 117 || i == 135 || i == 143){
+				const address = arr[i];
+				const name = arr[i + 2];
+				const category = arr[i + 4];
+				const school = arr[i + 6];
+				const rating = arr[i + 8];
+				const chairman = arr[i + 10];
+				const image = arr[i + 12];
+				const description = arr[i + 14];
+
+				const values = {
+					address,
+					description,
+					name,
+					category,
+					school,
+					rating,
+					chairman,
+					image,
+				}
+
+				//console.log("==== values ", address, name, category, school, rating, chairman, image, description);
+
+				await onFinish(values);
+			}
+			// window.location.reload();
+		}
+	}
 
 	const onFinishFailed = (errorInfo) => {
 		console.log('Failed:', errorInfo);
@@ -289,6 +362,10 @@ function CreateNft(props) {
 						padding: 20,
 						marginBottom: 50,
 					}}>
+					<div>
+						<input type="file" onChange={onChange} />
+		   				<button onClick={createNFTExcel}>Create</button>
+	   				</div>
 					<Title style={{ color: 'white' }}>Create Degree NFT</Title>
 					<Required style={{ color: 'white' }}>
 						<RedIcon style={{ color: 'white' }}>*</RedIcon> Required fields

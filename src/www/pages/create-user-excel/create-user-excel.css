@@ -1,0 +1,33 @@
+.file-input__input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  .file-input__label {
+    min-width: 150px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4245A8;
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 2px dotted #4245A8;
+  }
+  
+  .file-input__label:hover {
+    background-color: rgba(66, 69, 168, 0.25);
+  }
+  
+  .file-input__label svg {
+    height: 16px;
+    margin-right: 4px;
+  }
+  
