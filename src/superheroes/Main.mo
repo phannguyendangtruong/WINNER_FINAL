@@ -165,7 +165,7 @@ shared(msg) actor class NFTSale(
         username = "Dang Tuan Nghia"; 
         role = 3 ;
         cccd = "123456789";
-        school = "";
+        school = "FPOLY";
         birthday = "2003-01-22";
         image = "https://bafybeidogmnnguoj5cgyucveurkgavzhdlsqbxyaszwe4kv2jvvw7phnla.ipfs.w3s.link/49dfe71fe9db2c8575ca%20%281%29.jpg";
         description = "The currents and weather of the Grand Line's open sea are extremely unpredictable, whereas in the vicinity of islands the climate is stable.[8] The magnetic fields within the Grand Line cause normal compasses to malfunction, making it even more difficult to navigate,[9] and instead a special compass called a Log Pose[Jp 15] must be used.[10] The Log Pose functions by locking on to one island's magnetic field and then locking on to another island's magnetic field.[11] The time for it to set depends on the island."
@@ -175,7 +175,7 @@ shared(msg) actor class NFTSale(
         username = "Phan Nguyen Dang Truong";
         role = 3;
         cccd = "12345678";
-        school = "";
+        school = "FPOLY";
         birthday = "2003-01-22";
         image = "https://bafybeidogmnnguoj5cgyucveurkgavzhdlsqbxyaszwe4kv2jvvw7phnla.ipfs.w3s.link/49dfe71fe9db2c8575ca%20%281%29.jpg";
         description = "The currents and weather of the Grand Line's open sea are extremely unpredictable, whereas in the vicinity of islands the climate is stable.[8] The magnetic fields within the Grand Line cause normal compasses to malfunction, making it even more difficult to navigate,[9] and instead a special compass called a Log Pose[Jp 15] must be used.[10] The Log Pose functions by locking on to one island's magnetic field and then locking on to another island's magnetic field.[11] The time for it to set depends on the island."

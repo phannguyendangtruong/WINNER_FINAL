@@ -30,7 +30,7 @@ function CreateNft(props) {
 	const { principal } = useConnect();
 	const [fileImg, setFileImg] = useState('');
 	const profile = useRef({ role: 1 });
-	const allSchool = useRef([]);
+	const [allSchool, setAllSchool] = useState([]);
 	const [superheroes, { loading, error }] = useCanister('superheroes');
 
 	// upload image
@@ -55,8 +55,7 @@ function CreateNft(props) {
 	const getMyInfor = async () => {
 		const res = await superheroes.findUserById(Principal.fromText(principal));
 		const schools = await superheroes.getAllSchool();
-		allSchool.current = schools;
-		console.log('====> ', allSchool);
+		setAllSchool(schools);
 		profile.current = res[0];
 	};
 
@@ -383,25 +382,22 @@ function CreateNft(props) {
 											<Option value='3'>Merit</Option>
 										</Select>
 									</Form.Item>
-									<Form.Item name='school'>
-										<Select
-											defaultValue='School'
-											size='large'
-											style={{
-												width: 200,
-												marginBottom: 20,
-												borderRadius: 10,
-											}}>
-											<Option value='1'>FPT Polytechnic</Option>
-											<Option value='2'>FPT University</Option>
-
-											<Option value='3'>Uni of Greenwich</Option>
-
-											{/* {allSchool.current?.map((item) => {
-												<Option value={item?.name}>FPT Polytechnic</Option>;
-											})} */}
-										</Select>
-									</Form.Item>
+									{allSchool.length > 0 ? (
+										<Form.Item name='school'>
+											<Select
+												defaultValue='Choose School'
+												size='large'
+												style={{
+													width: 200,
+													marginBottom: 20,
+													borderRadius: 10,
+												}}>
+												{allSchool.map((item) => (
+													<Option value={item?.schoolCode}>{item?.name}</Option>
+												))}
+											</Select>
+										</Form.Item>
+									) : null}
 								</div>
 
 								<div style={{ color: 'white', fontSize: 14 }}>Enter rating</div>

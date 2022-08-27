@@ -27,6 +27,7 @@ import { toast } from 'react-toastify';
 import { withContext } from '../../hooks';
 import { themes } from '../../assets/themes';
 import NotPermistion from '../../components/not-permistion';
+import * as XLSX from "xlsx";
 
 const { Option } = Select;
 import { useCanister, useConnect } from '@connect2ic/react';
@@ -44,7 +45,9 @@ function CreateUser(props) {
 	const [previewTitle, setPreviewTitle] = useState('');
 	const [fileList, setFileList] = useState([]);
 	const profile = useRef({ role: 1 });
+	const [excel, setExcel] = useState([]);
 	const datePicker = useRef('');
+	const [allSchool, setAllSchool] = useState([]);
 
 	// when image upload
 	useEffect(() => {
@@ -66,6 +69,8 @@ function CreateUser(props) {
 	const getMyInfor = async () => {
 		const res = await superheroes.findUserById(Principal.fromText(principal));
 		profile.current = res[0];
+		const schools = await superheroes.getAllSchool();
+		setAllSchool(schools);
 	};
 
 	const requestUpdate = () => {
@@ -94,13 +99,12 @@ function CreateUser(props) {
 			Principal.fromText(values?.address),
 			values?.username,
 			values?.identity + '',
-			Number(values?.school),
+			values?.school,
 			datePicker.current,
 			image,
 			values?.description
 		);
 
-		console.log(res);
 		toast('Insert user success!!!');
 		window.location.reload();
 	};
@@ -122,6 +126,52 @@ function CreateUser(props) {
 			file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
 		);
 	};
+
+	const onChange = (e) => {
+		const [file] = e.target.files;
+		const reader = new FileReader();
+
+		reader.onload = (evt) => {
+			const bstr = evt.target.result;
+			const wb = XLSX.read(bstr, { type: "binary" });
+			const wsname = wb.SheetNames[0];
+			const ws = wb.Sheets[wsname];
+			const data = XLSX.utils.sheet_to_html(ws, { header: 1 });
+			let csv = data.replace(/<[^>]*>?/gm, ',');
+			setExcel(csv);
+		};
+		reader.readAsBinaryString(file);
+  	};
+
+	const createUserExcel = async () => {
+			toast('Waiting...!!!');
+			const arr = excel.split(',');
+			console.log(arr);
+
+			for(let i = 3; i < arr.length; i++){
+				if(i == 3 || i == 19 || i == 35 || i == 51 || i == 67 || i == 83 || i == 99 || i == 115 || i == 131 || i == 147){
+					const walletAddress = arr[i];
+					const username = arr[i + 2];
+					const cccd = arr[i + 4];
+					const school = arr[i + 6];
+					const birthday = arr[i + 8];
+					const image = arr[i + 10];
+					const description = arr[i + 12];
+					const res =  await superheroes.insertUser(
+						Principal.from(walletAddress),
+						username,
+						cccd,
+						school,
+						birthday,
+						image,
+						description
+					);
+					console.log("res: " + i + " ", walletAddress, username, cccd, school, birthday, image, description);
+					toast(`Insert user success!!!`);
+				}
+				//window.location.reload();
+			}
+		}
 
 	const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
@@ -281,6 +331,7 @@ function CreateUser(props) {
 				</div>
 			</Wrapper>
 			<Wrapper
+
 				style={{
 					backgroundColor: themes.colors.background_box,
 					borderRadius: 15,
@@ -289,6 +340,10 @@ function CreateUser(props) {
 					padding: 20,
 					marginBottom: 50,
 				}}>
+				<div>
+					<input type="file" onChange={onChange} />
+		   			<button onClick={createUserExcel}>Create</button>
+	   			</div>
 				<Title style={{ color: 'white' }}>Create Account</Title>
 				<Required style={{ color: 'white' }}>
 					<RedIcon style={{ color: 'white' }}>*</RedIcon> Required fields
@@ -369,21 +424,22 @@ function CreateUser(props) {
 									flexDirection: 'row',
 									justifyContent: 'space-between',
 								}}>
-								<Form.Item name='school'>
-									<Select
-										defaultValue='Choose chool'
-										size='large'
-										style={{
-											width: '100%',
-											marginBottom: 10,
-											borderRadius: 10,
-										}}>
-										<Option value='1'>FPT Polytechnic</Option>
-										<Option value='2'>FPT University</Option>
-
-										<Option value='3'>Uni of Greenwich</Option>
-									</Select>
-								</Form.Item>
+								{allSchool.length > 0 ? (
+									<Form.Item name='school'>
+										<Select
+											defaultValue='Choose School'
+											size='large'
+											style={{
+												width: 200,
+												marginBottom: 20,
+												borderRadius: 10,
+											}}>
+											{allSchool.map((item) => (
+												<Option value={item?.schoolCode}>{item?.name}</Option>
+											))}
+										</Select>
+									</Form.Item>
+								) : null}
 							</div>
 
 							<div style={{ color: 'white', fontSize: 14 }}>Description</div>

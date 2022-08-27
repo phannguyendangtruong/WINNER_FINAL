@@ -33,6 +33,8 @@ const Ranking = () => {
 	const users = useRef([]);
 	const [usersSearch, setUsersSearch] = useState([]);
 	const [search, setSearch] = useState('');
+	const allSchool = useRef([]);
+	const itemSchool = useRef();
 
 	const {
 		isConnected,
@@ -45,22 +47,33 @@ const Ranking = () => {
 	} = useConnect();
 
 	const getSchool = (_value) => {
-		switch (_value) {
-			case 1:
-				return 'FPT POLYTECHNIC';
-			case 2:
-				return 'FPT UNIVERSITY';
-			case 3:
-				return 'UNI OF GREENWICH';
-			default:
-				return 'FPT POLYTECHNIC';
-		}
+		// switch (_value) {
+		// 	case 1:
+		// 		return 'FPT POLYTECHNIC';
+		// 	case 2:
+		// 		return 'FPT UNIVERSITY';
+		// 	case 3:
+		// 		return 'UNI OF GREENWICH';
+		// 	default:
+		// 		return 'FPT POLYTECHNIC';
+		// }
+
+		if (_value) {
+			if (allSchool.current.length > 0) {
+				const nameSchool = allSchool.current.filter(
+					(_item) => _item.schoolCode == _value
+				)[0];
+
+				return nameSchool.name;
+			} else {
+				return '';
+			}
+		} else return '';
 	};
 
 	const findSearch = (e) => {
 		// const keyword = e.target.value;
 		usersSearch;
-		console.log('===> search ', e.target.value);
 		if (e.target.value.length > 0) {
 			let listSearch = [];
 			// = test.filter((item) => {
@@ -81,11 +94,8 @@ const Ranking = () => {
 						item.cccd.includes(e.target.value)
 				);
 
-			console.log('===> search ', listSearch);
-
 			setUsersSearch(listSearch);
 		} else {
-			console.log('VO ne vo ne ', users.current);
 			setUsersSearch(users.current);
 		}
 
@@ -122,13 +132,11 @@ const Ranking = () => {
 			console.log('List all ', res, newRank);
 
 			setUsersSearch(newRank);
-			// setUsers(newRank);
 
-			// if (newRank.length > 3) {
-			// 	setUsersRemain(newRank.splice(3, newRank.length - 3));
-			// }
-			// setUsersTop3(newRank.splice(0, 3));
-			// console.log('user remain ', usersRemain);
+			const schools = await superheroes.getAllSchool();
+			allSchool.current = schools;
+
+			console.log('====> all school ', schools);
 		} catch (error) {
 			console.log('[getUsers] error', error);
 		}
@@ -174,7 +182,7 @@ const Ranking = () => {
 							</div>
 						</div>
 						<div style={{ fontWeight: 'bold', fontSize: 12, color: 'white' }}>
-							{getSchool(Number(item.school))}
+							{getSchool(item.school)}
 						</div>
 						<div style={{ fontWeight: 'bold', fontSize: 12, color: 'white' }}>
 							{item.sumDegree}
@@ -280,7 +288,7 @@ const Ranking = () => {
 							<img src={item?.image} />
 							<div>{item?.username}</div>
 							<p style={{ fontSize: 10, color: 'gray' }}>
-								{getSchool(Number(item?.school))}
+								{getSchool(item?.school)}
 							</p>
 							<p style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}>
 								<span style={{ fontWeight: 'normal' }}> Sum degree</span>{' '}

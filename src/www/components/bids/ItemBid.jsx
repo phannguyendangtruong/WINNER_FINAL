@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './bids.css';
 
 import { Link } from 'react-router-dom';
@@ -39,6 +39,7 @@ const formatDate = (_timestamp) => {
 const ItemBid = ({ item }) => {
 	const [superheroes, { loading, error }] = useCanister('superheroes');
 	const [profile, setProfile] = useState();
+
 	useEffect(() => {
 		getMyInfor();
 	}, [superheroes]);
