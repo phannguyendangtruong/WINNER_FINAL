@@ -111,17 +111,36 @@ function Navbar(props) {
 									<MenuItem>Manage</MenuItem>
 								</button>
 								<div className='dropdown-content'>
-									<a href='/nft/create' onClick={selectTab}>
-										<MenuItem>Create degree</MenuItem>
-									</a>
+									<div className='sub-dropdown'>
+										<button className='sub-dropbtn'>
+											<MenuItem>Create degree</MenuItem>
+										</button>
+										<div className='sub-dropdown-content'>
+											<a href='/nft/create' onClick={selectTab}>
+												<MenuItem>Create with form</MenuItem>
+											</a>
 
-									<a href='/create-user'>
-										<MenuItem>Create account</MenuItem>
-									</a>
+											<a href='/nft/create-excel' onClick={selectTab}>
+												<MenuItem>Import by excel</MenuItem>
+											</a>
+										</div>
+									</div>
 
-									<a href='/create-user-excel'>
-										<MenuItem>Create account excel</MenuItem>
-									</a>
+
+									<div className='sub-dropdown'>
+										<button className='sub-dropbtn'>
+											<MenuItem>Create account</MenuItem>
+										</button>
+										<div className='sub-dropdown-content'>
+											<a href='/create-user'>
+												<MenuItem>Create with form</MenuItem>
+											</a>
+
+											<a href='/create-user-excel'>
+												<MenuItem>Import by excel</MenuItem>
+											</a>
+										</div>
+									</div>
                   
 									{profile?.role == 2 ? (
 										<a href='/manage-degree' onClick={selectTab}>

@@ -362,10 +362,6 @@ function CreateNft(props) {
 						padding: 20,
 						marginBottom: 50,
 					}}>
-					<div>
-						<input type="file" onChange={onChange} />
-		   				<button onClick={createNFTExcel}>Create</button>
-	   				</div>
 					<Title style={{ color: 'white' }}>Create Degree NFT</Title>
 					<Required style={{ color: 'white' }}>
 						<RedIcon style={{ color: 'white' }}>*</RedIcon> Required fields
