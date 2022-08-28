@@ -13,7 +13,7 @@ const container = {
 const testTitle = {
 	fontSize: 20,
 	fontWeight: 'bold',
-	fontFamily: 'Poppins',
+	fontFamily: 'sans-serif',
 	color: 'white',
 	margin: 'auto',
 };

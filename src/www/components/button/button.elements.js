@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const Btn = styled.button`
     background-image: url('https://play.farmersworld.io/static/media/plain-button.58a5875c.png');
-    font-family: "CookieRun-Black";
+    font-family: sans-serif;
     background-size: contain;
     background-clip: padding-box;
     width: 180px;

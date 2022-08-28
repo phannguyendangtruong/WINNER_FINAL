@@ -1,11 +1,11 @@
 .fontLucida {
-	font-family: 'Lucida Console', 'Courier New', monospace;
+	font-family: sans-serif;
 }
 
 .fontLucidaNormal {
-	font-family: 'Lucida Console', 'Courier New';
+	font-family: sans-serif;
 }
 
 .fontArial {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: sans-serif;
 }

@@ -13,7 +13,7 @@ h1 {
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
-	font-family: monospace;
+	font-family: sans-serif;
 	padding-top: 20px;
 	text-align: center;
 }
@@ -101,5 +101,5 @@ button {
 }
 
 div {
-	font-family: 'Poppins', sans-serif;
+	font-family: sans-serif;
 }

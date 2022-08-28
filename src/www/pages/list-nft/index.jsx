@@ -27,6 +27,24 @@ const formatDate = (_timestamp) => {
 	return str;
 };
 
+const formatDateExpiration = (_timestamp) => {
+	var date = new Date(_timestamp);
+
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	var hour = date.getHours();
+	var min = date.getMinutes();
+
+	month = (month < 10 ? '0' : '') + month;
+	day = (day < 10 ? '0' : '') + day;
+	hour = (hour < 10 ? '0' : '') + hour;
+	min = (min < 10 ? '0' : '') + min;
+
+	var str = date.getFullYear() + '-' + month + '-' + day;
+
+	return str;
+};
+
 function ListNft() {
 	const {
 		isConnected,
@@ -87,12 +105,15 @@ function ListNft() {
 			})
 		);
 		const resu = await promise4all;
-		console.log('====> ', resu);
 
 		// const resu = [await customAxios(res[].metadata[0]?.tokenUri)];
 
-
 		const newlist = res.map((el, index) => {
+			if (
+				resu[index].expirationDate < formatDateExpiration(Date.now()) &&
+				resu[index].expirationDate != ''
+			)
+				return null;
 			try {
 				return { ...el, ...resu[index] };
 			} catch (e) {
@@ -101,9 +122,9 @@ function ListNft() {
 		});
 
 		listAll.current = newlist;
-		setListDiploma(newlist.filter((el) => el.category === '1'));
-		setListCertificate(newlist.filter((el) => el.category === '2'));
-		setListOther(newlist.filter((el) => el.category === '3'));
+		setListDiploma(newlist.filter((el) => el?.category === '1'));
+		setListCertificate(newlist.filter((el) => el?.category === '2'));
+		setListOther(newlist.filter((el) => el?.category === '3'));
 	};
 
 	const renderList = (list, title) => {

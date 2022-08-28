@@ -79,10 +79,9 @@ function CreateNftExcel(props) {
 	}, [principal, superheroes]);
 	
 	const onFinish = async (values) => {
-		toast('Minting NFT!!!');
-
 		if(values?.address == undefined){
 		}else{
+			toast('Minting NFT!!!');
 			const nFile = new File(
 				[
 					JSON.stringify({
@@ -131,19 +130,20 @@ function CreateNftExcel(props) {
   	};
 
 	  const createNFTExcel = async () => {
-		toast('Waiting...!!!');
 		const arr = excel.split(',');
+		console.log(arr);
 
 		for(let i = 3; i < arr.length; i++){
-			if(i == 3 || i == 21 || i == 39 || i == 57 || i == 75 || i == 93 || i == 117 || i == 135 || i == 143){
+			if(i == 3 || i == 25 || i == 47 || i == 69 || i == 91 || i == 113 || i == 135 || i == 157 || i == 179){
 				const address = arr[i];
 				const name = arr[i + 2];
 				const category = arr[i + 4];
 				const school = arr[i + 6];
 				const rating = arr[i + 8];
 				const chairman = arr[i + 10];
-				const image = arr[i + 12];
-				const description = arr[i + 14];
+				const image = arr[i + 13];
+				const description = arr[i + 16];
+				const expirationDate = arr[i + 18];
 
 				const values = {
 					address,
@@ -154,13 +154,12 @@ function CreateNftExcel(props) {
 					rating,
 					chairman,
 					image,
+					expirationDate
 				}
 
-				//console.log("==== values ", address, name, category, school, rating, chairman, image, description);
-				const get = allSchool.find(school => school.schoolCode === values.school);
-				console.log("==== get ", get?.schoolCode);
-				console.log("==== values ", values);
-				if(get?.schoolCode == values.school){	
+				console.log("==== values ", address, name, category, school, rating, chairman, image, description, expirationDate);
+				const get = allSchool.find(school => school.schoolCode === values?.school);
+				if(get?.schoolCode == values?.school){	
 					await onFinish(values);
 				}else{
 					toast('School not found!!!');
@@ -275,7 +274,7 @@ function CreateNftExcel(props) {
 												id="file-input"
 												className="file-input__input" onChange={onChange}
 												/>
-												<label className="file-input__label" for="file-input">
+												<label className="file-input__label" htmlFor="file-input">
 												<svg
 													aria-hidden="true"
 													focusable="false"

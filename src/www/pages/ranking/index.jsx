@@ -30,7 +30,7 @@ const formatDate = (_timestamp) => {
 
 const Ranking = () => {
 	const [superheroes, { loading, error }] = useCanister('superheroes');
-	const users = useRef([]);
+	const [users, setUsers] = useState([]);
 	const [usersSearch, setUsersSearch] = useState([]);
 	const [search, setSearch] = useState('');
 	const allSchool = useRef([]);
@@ -64,7 +64,7 @@ const Ranking = () => {
 					(_item) => _item.schoolCode == _value
 				)[0];
 
-				return nameSchool.name;
+				return nameSchool?.name;
 			} else {
 				return '';
 			}
@@ -73,22 +73,25 @@ const Ranking = () => {
 
 	const findSearch = (e) => {
 		// const keyword = e.target.value;
-		usersSearch;
+		console.log('====> all users ', users);
+		setUsersSearch(users);
+
+		const test = users;
 		if (e.target.value.length > 0) {
 			let listSearch = [];
-			// = test.filter((item) => {
-			// 	item.cccd == keyword;
-			// 	console.log('== cccds ', item.cccd == keyword, item.cccd, keyword);
-			// });
-			if (listSearch.length === 0) {
-				listSearch = users.current.filter(
-					(item) =>
-						Principal.fromUint8Array(item.walletAddress._arr).toString() ==
-						e.target.value.toString()
-				);
-			}
+
+			try {
+				if (listSearch.length === 0) {
+					listSearch = test.filter(
+						(item) =>
+							Principal.fromUint8Array(item.walletAddress._arr).toString() ==
+							e.target.value.toString()
+					);
+				}
+			} catch (e) {}
+
 			if (listSearch.length === 0)
-				listSearch = users.current.filter(
+				listSearch = test.filter(
 					(item) =>
 						item.username.includes(e.target.value) ||
 						item.cccd.includes(e.target.value)
@@ -96,7 +99,7 @@ const Ranking = () => {
 
 			setUsersSearch(listSearch);
 		} else {
-			setUsersSearch(users.current);
+			setUsersSearch(users);
 		}
 
 		setSearch(e.target.value);
@@ -127,16 +130,12 @@ const Ranking = () => {
 			const newRank = await EvaluateRank(res);
 
 			newRank.sort((a, b) => b.sumDegree - a.sumDegree);
-			users.current = newRank;
-
-			console.log('List all ', res, newRank);
-
 			setUsersSearch(newRank);
+
+			setUsers(newRank);
 
 			const schools = await superheroes.getAllSchool();
 			allSchool.current = schools;
-
-			console.log('====> all school ', schools);
 		} catch (error) {
 			console.log('[getUsers] error', error);
 		}
@@ -162,32 +161,68 @@ const Ranking = () => {
 						<div style={row}>
 							<div
 								style={{
+									width: '5%',
 									fontWeight: 'bold',
 									fontSize: 12,
 									color: 'white',
-									marginRight: 30,
+									marginRight: 10,
 								}}>
 								{index + 4}
 							</div>
-							<img src={item.image} />
+							<div
+								style={{
+									width: '10%',
+									flex: 1,
+									alignSelf: 'center',
+								}}>
+								<img style={{ objectFit: 'cover' }} src={item.image} />
+							</div>
 
 							<div
 								style={{
+									width: 320,
 									fontWeight: 'bold',
 									fontSize: 12,
 									color: 'white',
-									marginLeft: 10,
+									flex: 1,
+									alignSelf: 'center',
 								}}>
 								{item.username}
 							</div>
 						</div>
-						<div style={{ fontWeight: 'bold', fontSize: 12, color: 'white' }}>
+						<div
+							style={{
+								width: 120,
+								fontWeight: 'bold',
+								fontSize: 12,
+								color: 'white',
+								flex: 1,
+								alignSelf: 'center',
+								marginLeft: 40,
+							}}>
 							{getSchool(item.school)}
 						</div>
-						<div style={{ fontWeight: 'bold', fontSize: 12, color: 'white' }}>
+						<div
+							style={{
+								width: '15%',
+								fontWeight: 'bold',
+								fontSize: 12,
+								color: 'white',
+								flex: 1,
+								alignSelf: 'center',
+								marginLeft: 130,
+							}}>
 							{item.sumDegree}
 						</div>
-						<div style={{ fontWeight: 'bold', fontSize: 12, color: 'white' }}>
+						<div
+							style={{
+								width: '30%',
+								fontWeight: 'bold',
+								fontSize: 12,
+								color: 'white',
+								flex: 1,
+								alignSelf: 'center',
+							}}>
 							{address.slice(0, 20) +
 								'...' +
 								address.slice(address.length - 20, address.length - 1)}
@@ -198,19 +233,41 @@ const Ranking = () => {
 		);
 	};
 
-	const inputSearch = useCallback(() => {
-		return (
-			<input
-				type='text'
-				value={search}
-				onChange={findSearch}
-				placeholder='Search by address wallet, citizen identification'
-			/>
-		);
-	});
+	const renderListTop = () => {
+		const data = users.slice(0, 3);
 
-	const renderHeaderListBottom = () => {
 		return (
+			<div style={rowTop}>
+				{data?.map((item, index) => (
+					<Link key={Math.random()} to={`/profile/${item.walletAddress}`}>
+						<div className='boxTop' style={boxTop}>
+							<img src={item?.image} />
+							<div>{item?.username}</div>
+							<p style={{ fontSize: 10, color: 'gray' }}>
+								{getSchool(item?.school)}
+							</p>
+							<p style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}>
+								<span style={{ fontWeight: 'normal' }}> Sum degree</span>{' '}
+								{item?.sumDegree}
+							</p>
+							<p style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}>
+								<span style={{ fontWeight: 'normal' }}> Top ranking</span>{' '}
+								{index + 1}
+							</p>
+						</div>
+					</Link>
+				))}
+			</div>
+		);
+	};
+
+	return (
+		<div className='profile section__padding'>
+			<div style={textTitle}>Top Rank Students</div>
+			<div style={textDay}>{formatDate(new Date())}</div>
+
+			{renderListTop()}
+
 			<div style={containerBottomRank} key={Math.random()}>
 				<div
 					className='boxTopBottom'
@@ -222,19 +279,6 @@ const Ranking = () => {
 						justifyItems: 'center',
 						alignItems: 'center',
 					}}>
-					{/* <div style={iconFind}>
-						<AiOutlineSearch size={20} color='white' />
-					</div> */}
-
-					{/* {inputSearch()} */}
-					{/* <Search
-						placeholder='Search by address wallet, citizen identification'
-						allowClear
-						enterButton='Search'
-						size='middle'
-						onSearch={findSearch}
-					/> */}
-
 					<input
 						onChange={findSearch}
 						value={search.current}
@@ -274,48 +318,9 @@ const Ranking = () => {
 					</div>
 				</div>
 			</div>
-		);
-	};
-
-	const renderListTop = () => {
-		const data = users.current.slice(0, 3);
-
-		return (
-			<div style={rowTop}>
-				{data?.map((item, index) => (
-					<Link key={Math.random()} to={`/profile/${item.walletAddress}`}>
-						<div className='boxTop' style={boxTop}>
-							<img src={item?.image} />
-							<div>{item?.username}</div>
-							<p style={{ fontSize: 10, color: 'gray' }}>
-								{getSchool(item?.school)}
-							</p>
-							<p style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}>
-								<span style={{ fontWeight: 'normal' }}> Sum degree</span>{' '}
-								{item?.sumDegree}
-							</p>
-							<p style={{ fontSize: 12, color: 'white', fontWeight: 'bold' }}>
-								<span style={{ fontWeight: 'normal' }}> Top ranking</span>{' '}
-								{index + 1}
-							</p>
-						</div>
-					</Link>
-				))}
-			</div>
-		);
-	};
-
-	return (
-		<div className='profile section__padding'>
-			<div style={textTitle}>Top Rank Students</div>
-			<div style={textDay}>{formatDate(new Date())}</div>
-
-			{renderListTop()}
-
-			{renderHeaderListBottom()}
 
 			{search.length === 0
-				? usersSearch?.slice(3, usersSearch.length)?.map((item, index) => {
+				? users?.slice(3, usersSearch.length)?.map((item, index) => {
 						return <ItemRank item={item} index={index} key={Math.random()} />;
 				  })
 				: usersSearch?.map((item, index) => {

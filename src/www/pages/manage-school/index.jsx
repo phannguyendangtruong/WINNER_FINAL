@@ -58,9 +58,10 @@ const ManageUser = () => {
 	const getSchool = async () => {
 		try {
 			const res = await superheroes.getAllSchool();
-			const filterSchool = res.filter((item) => Number(item.role) != 3);
-			console.log(res);
-			setSchools(filterSchool);
+			// const filterSchool = res.filter((item) => Number(item.role) != 3);
+
+			console.log('===> ', res);
+			setSchools(res);
 		} catch (error) {
 			console.log('[GetSchool] error', error);
 		}
@@ -121,7 +122,7 @@ const ManageUser = () => {
 								fontWeight: 'bold',
 								fontSize: 12,
 								color: 'white',
-								paddingLeft: 100,
+								paddingLeft: 120,
 							}}>
 							{' '}
 							Address School
@@ -131,7 +132,7 @@ const ManageUser = () => {
 								fontWeight: 'bold',
 								fontSize: 12,
 								color: 'white',
-								paddingLeft: 200,
+								paddingLeft: 150,
 							}}>
 							{' '}
 							School Code
@@ -141,7 +142,7 @@ const ManageUser = () => {
 								fontWeight: 'bold',
 								fontSize: 12,
 								color: 'white',
-								paddingLeft: 220,
+								paddingLeft: 195,
 							}}>
 							{' '}
 							Chairman

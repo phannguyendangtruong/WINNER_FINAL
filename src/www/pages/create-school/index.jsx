@@ -6,14 +6,7 @@ import {
 	Wrapper,
 	FormWrapper,
 } from './create-school.elements';
-import {
-	Upload,
-	Modal,
-	Form,
-	Input,
-	Button,
-	Select,
-} from 'antd';
+import { Upload, Modal, Form, Input, Button, Select } from 'antd';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Principal } from '@dfinity/principal';
@@ -65,7 +58,7 @@ function CreateSchool(props) {
 			reader.onload = () => resolve(reader.result);
 
 			reader.onerror = (error) => reject(error);
-	});
+		});
 
 	const onFinish = async (values) => {
 		toast('Waiting...!!!');
@@ -85,10 +78,9 @@ function CreateSchool(props) {
 		);
 
 		console.log(res);
-		toast('Insert user success!!!');
+		toast('Insert school success!!!');
 		window.location.reload();
 	};
-
 
 	const handlePreview = async (file) => {
 		if (!file.url && !file.preview) {
@@ -145,10 +137,10 @@ function CreateSchool(props) {
 	);
 
 	const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-	const handleChangeLogo = ({ fileList : newLogoList }) => {
+	const handleChangeLogo = ({ fileList: newLogoList }) => {
 		console.log(newLogoList);
 		setLogoList(newLogoList);
-	}
+	};
 	return Number(profile.current?.role) === 1 ? (
 		<NotPermistion />
 	) : (
@@ -237,7 +229,7 @@ function CreateSchool(props) {
 						Step 5
 					</div>
 					<div style={{ color: 'white' }}>
-						Submit: After entering, will press send 
+						Submit: After entering, will press send
 					</div>
 				</div>
 			</Wrapper>
@@ -325,7 +317,9 @@ function CreateSchool(props) {
 							<div style={{ color: 'white', fontSize: 14 }}>School Name</div>
 							<Form.Item
 								name='name'
-								rules={[{ required: true, message: 'Please input school name!' }]}>
+								rules={[
+									{ required: true, message: 'Please input school name!' },
+								]}>
 								<Input
 									width={'100%'}
 									size='large'
@@ -345,7 +339,9 @@ function CreateSchool(props) {
 							<div style={{ color: 'white', fontSize: 14 }}>School Code</div>
 							<Form.Item
 								name='schoolCode'
-								rules={[{ required: true, message: 'Please input school code!' }]}>
+								rules={[
+									{ required: true, message: 'Please input school code!' },
+								]}>
 								<Input
 									width={'100%'}
 									size='large'
@@ -365,7 +361,9 @@ function CreateSchool(props) {
 							<div style={{ color: 'white', fontSize: 14 }}>Description</div>
 							<Form.Item
 								name='description'
-								rules={[{ required: true, message: 'Please input description!' }]}>
+								rules={[
+									{ required: true, message: 'Please input description!' },
+								]}>
 								<Input
 									width={'100%'}
 									size='large'

@@ -76,7 +76,7 @@ const Index = () => {
 	const desc = location.pathname.split('/')[2];
 
 	const getInfoSchool = async () => {
-		const res = await superheroes.findSchool(parseInt(desc));
+		const res = await superheroes.findSchool(parseInt(desc)+1);
 		setSchool(res);
 	};
 

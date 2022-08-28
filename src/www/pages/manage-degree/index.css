@@ -13,7 +13,7 @@ h1 {
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
-	font-family: monospace;
+	font-family: sans-serif;
 	padding-top: 100px;
 	text-align: center;
 }
@@ -25,7 +25,7 @@ button {
 
 	background: none;
 	text-decoration: inherit;
-	font-family: system-ui;
+	font-family: sans-serif;
 	font-size: 1rem;
 	padding: 1rem 2rem;
 
@@ -39,15 +39,15 @@ button {
 }
 
 .fontLucida {
-	font-family: 'Lucida Console', 'Courier New', monospace;
+	font-family: sans-serif;
 }
 
 .fontLucidaNormal {
-	font-family: 'Lucida Console', 'Courier New';
+	font-family: sans-serif;
 }
 
 .fontArial {
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: sans-serif;
 }
 
 .container input {
@@ -69,5 +69,5 @@ button {
 }
 
 div {
-	font-family: 'Poppins', sans-serif;
+	font-family: sans-serif;
 }

@@ -8,19 +8,17 @@ import {
 	Wrapper,
 	FormWrapper,
 } from './create-nft.elements';
-import { Upload, Form, Input, Button, Select, Modal } from 'antd';
+import { Upload, Form, Input, Button, Select, Modal, DatePicker } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { client } from '../../utilities/ipfs';
 import { Principal } from '@dfinity/principal';
-import { customAxios } from '../../utils/custom-axios';
 import { toast } from 'react-toastify';
 import { withContext } from '../../hooks';
 import { themes } from '../../assets/themes';
 import { File } from 'nft.storage';
 import NotPermistion from '../../components/not-permistion';
-import * as XLSX from "xlsx";
 
 const { Option } = Select;
 import { useCanister, useConnect } from '@connect2ic/react';
@@ -32,8 +30,8 @@ function CreateNft(props) {
 	const [fileImg, setFileImg] = useState('');
 	const profile = useRef({ role: 1 });
 	const [allSchool, setAllSchool] = useState([]);
-	const [excel, setExcel] = useState([]);
 	const [superheroes, { loading, error }] = useCanister('superheroes');
+	const datePicker = useRef('');
 
 	// upload image
 
@@ -41,6 +39,10 @@ function CreateNft(props) {
 	const [previewImage, setPreviewImage] = useState('');
 	const [previewTitle, setPreviewTitle] = useState('');
 	const [fileList, setFileList] = useState([]);
+
+	const onChangeDate = (date, dateString) => {
+		datePicker.current = dateString;
+	};
 
 	// when image upload
 	useEffect(() => {
@@ -77,15 +79,11 @@ function CreateNft(props) {
 		}
 	}, [principal, superheroes]);
 
-	const checkSchool = (school) => {
-
-	}
-
 	const onFinish = async (values) => {
 		toast('Minting NFT!!!');
 
 		const cid = await client.put([fileList[0].originFileObj]);
-		
+
 		const nFile = new File(
 			[
 				JSON.stringify({
@@ -97,12 +95,13 @@ function CreateNft(props) {
 					chairman: values?.chairman,
 					image: `${IPFS_LINK}${cid}/${fileList[0].originFileObj.name}`,
 					timeCreate: Date.now(),
+					expirationDate: datePicker.current,
 				}),
 			],
 			`${values?.name}.json`,
 			{ type: 'text/plain' }
 		);
-	
+
 		const metadataCID = await client.put([nFile]);
 
 		const res = await superheroes.mint(Principal.fromText(values?.address), [
@@ -419,6 +418,16 @@ function CreateNft(props) {
 								<Form.Item name='chairman'>
 									<Input size='large' placeholder='Name of chairman' />
 								</Form.Item>
+
+								<div style={{ color: 'white', fontSize: 14 }}>
+									Expiration date
+								</div>
+								<DatePicker
+									style={{ width: '100%' }}
+									onChange={onChangeDate}
+									placeholder='Enter the expiration date, if not, please ignore
+									'
+								/>
 
 								<FormItem>
 									<Form.Item>

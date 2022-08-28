@@ -18,6 +18,7 @@ const ItemSchool = ({ item, index }) => {
 					<div style={row}>
 						<div
 							style={{
+								width: '5%',
 								fontWeight: 'bold',
 								fontSize: 12,
 								color: 'white',
@@ -25,47 +26,54 @@ const ItemSchool = ({ item, index }) => {
 							}}>
 							{index + 1}
 						</div>
-						<img src={item.image} />
-
+						<div style={{ 
+								width: '10%', 
+								flex:1,
+								alignSelf: 'center',
+							}}>
+							<img style={{objectFit: 'cover'}} src={item.logo} />
+						</div>
 						<div
 							style={{
+								width: '15%',
 								fontWeight: 'bold',
 								fontSize: 12,
 								color: 'white',
-								marginLeft: 120,
+								flex:1,
+								alignSelf: 'center',
 							}}>
 							{item.name}
 						</div>
 					</div>
 					<div
 						style={{
+							width: '30%',
 							fontWeight: 'bold',
 							fontSize: 12,
 							color: 'white',
-							flex: 2,
-							marginLeft: 180,
+							flex: 1,
 							alignSelf: 'center',
 						}}>
 						{item.address}
 					</div>
 					<div
 						style={{
+							width: '20%',
 							fontWeight: 'bold',
 							fontSize: 12,
 							color: 'white',
-							flex: 2,
-							marginLeft: 200,
+							flex: 1,
 							alignSelf: 'center',
 						}}>
 						{item.schoolCode}
 					</div>
 					<div
 						style={{
+							width: '20%',
 							fontWeight: 'bold',
 							fontSize: 12,
 							color: 'white',
-							flex: 3,
-							marginLeft: 140,
+							flex: 1,
 							alignSelf: 'center',
 						}}>
 						{item.chairman}
